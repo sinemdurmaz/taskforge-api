@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge API: Projenin Röntgeni & Nasıl Çalışır?</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --card-hover: #1c2742;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-teal: #14b8a6;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-green: #22c55e;
+      --accent-rose: #f43f5e;
+      --border: #1e293b;
+      --code-bg: #0b1120;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #f59e0b, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #fff;
+    }
+
+    /* Restoran Benzetmesi Kartları */
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .role-card {
+      background: rgba(11, 17, 32, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      position: relative;
+    }
+
+    .role-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .role-name { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem; }
+    .role-tech { font-size: 0.82rem; font-family: monospace; color: var(--accent-blue); margin-bottom: 0.75rem; }
+    .role-desc { font-size: 0.92rem; color: var(--text-muted); }
+
+    /* Katman Sırası ve Klasör Ağacı */
+    .folder-tree {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      margin: 1.5rem 0;
+      line-height: 1.9;
+    }
+
+    .folder-name { color: #38bdf8; font-weight: bold; }
+    .file-name { color: #f1f5f9; }
+    .file-comment { color: #64748b; font-size: 0.85rem; font-style: italic; }
+
+    /* Senaryo Adımları */
+    .step-box {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1.25rem;
+      background: rgba(11, 17, 32, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .step-content h4 { font-size: 1.05rem; color: #fff; margin-bottom: 0.3rem; }
+    .step-content p { font-size: 0.92rem; color: var(--text-muted); }
+    .step-code {
+      margin-top: 0.5rem;
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent-teal);
+      padding: 0.4rem 0.75rem;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge-top">Sıfırdan Anlatım &bull; En Sade Haliyle</span>
+      <h1>TaskForge API'nin Röntgeni</h1>
+      <p>Bu proje nasıl çalışıyor? Hangi kodu nereye yazdık? Bir restoran benzetmesiyle adım adım anlayalım.</p>
+    </header>
+
+    <!-- 1. BÜYÜK RESİM: RESTORAN BENZETMESİ -->
+    <section class="section">
+      <h2 class="section-title"><span>🍽️</span> 1. Büyük Resim: Projemiz Bir Restorandır</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Bir web sitesi veya mobil uygulama bir restorana benzer. Kullanıcı bir butona bastığında arka planda şu 5 kişi sırayla çalışır:
+      </p>
+
+      <div class="restaurant-grid">
+        <div class="role-card" style="border-top: 4px solid var(--accent-blue);">
+          <div class="role-icon">🧑‍💼</div>
+          <div class="role-name">1. Garson (API Katmanı)</div>
+          <div class="role-tech">api/v1/auth.py, tasks.py</div>
+          <div class="role-desc">
+            Müşteriyi karşılar, siparişi dinler (POST isteği). Müşterinin kimlik kartına (JWT Token) bakar. "Sen bu masada oturabilir misin?" diye sorar. Siparişi alıp mutfağa iletir.
+          </div>
+        </div>
+
+        <div class="role-card" style="border-top: 4px solid var(--accent-purple);">
+          <div class="role-icon">👨‍🍳</div>
+          <div class="role-name">2. Aşçıbaşı (Servis Katmanı)</div>
+          <div class="role-tech">services/task_service.py</div>
+          <div class="role-desc">
+            Projenin <strong>beynidir</strong>. Kararları verir: "Bu sipariş kurallara uygun mu? En acil sipariş hangisi?" (Min-Heap / Priority Queue). "TODO olan iş doğrudan DONE yapılamaz!" kuralını işletir.
+          </div>
+        </div>
+
+        <div class="role-card" style="border-top: 4px solid var(--accent-teal);">
+          <div class="role-icon">📦</div>
+          <div class="role-name">3. Kilerci (Repository Katmanı)</div>
+          <div class="role-tech">repositories/task_repository.py</div>
+          <div class="role-desc">
+            Aşçı doğrudan depoya gitmez. Kilerciye "Bana 5 numaralı görevi getir" der. Kilerci dolaba gider, veriyi çeker ve aşçıya verir. Veritabanı sorgusu (SQL) sadece burada yazılır.
+          </div>
+        </div>
+
+        <div class="role-card" style="border-top: 4px solid var(--accent-amber);">
+          <div class="role-icon">📋</div>
+          <div class="role-name">4. Menü & Kalıplar (Modeller)</div>
+          <div class="role-tech">models/user.py, task.py</div>
+          <div class="role-desc">
+            "Bir Görev nedir?", "Bir Kullanıcı hangi bilgilere sahiptir?" sorularının kalıplarıdır. Görevin başlığı, önceliği, durumu bu kalıplarla belirlenir.
+          </div>
+        </div>
+
+        <div class="role-card" style="border-top: 4px solid var(--accent-rose);">
+          <div class="role-icon">⚡</div>
+          <div class="role-name">5. Elektrik & Su (Core Altyapı)</div>
+          <div class="role-tech">core/config.py, database.py</div>
+          <div class="role-desc">
+            Restoranın tesisatıdır. Gizli şifreler nerede? Veritabanına bağlanan ana boru hattı nerede? Hata olursa musluğu kapatan (Rollback) sistem burasıdır.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. HANGİ KODU NEREYE YAZDIK? -->
+    <section class="section">
+      <h2 class="section-title"><span>📂</span> 2. Dosya Haritası: Hangi Kod Nerede Duruyor?</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        Projemizdeki tüm klasörlerin ve içindeki dosyaların tek tek ne iş yaptığı:
+      </p>
+
+      <div class="folder-tree">
+        📁 <span class="folder-name">taskforge-api/</span><br>
+        ├── 📁 <span class="folder-name">core/</span> <span class="file-comment">(Altyapı ve Tesisat)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">config.py</span> <span class="file-comment">→ .env dosyasındaki şifreleri ve ayarları okuyan Settings sınıfı</span><br>
+        │&nbsp;&nbsp; └── <span class="file-name">database.py</span> <span class="file-comment">→ SQLite veritabanına bağlanan motor (Engine) ve get_session()</span><br>
+        ├── 📁 <span class="folder-name">models/</span> <span class="file-comment">(Veri Kalıpları / Şablonlar)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">enums.py</span> <span class="file-comment">→ Roller (ADMIN, DEVELOPER), Öncelikler (CRITICAL, HIGH), Durumlar (TODO, DONE)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">base.py</span> <span class="file-comment">→ Tüm tablolarda ortak olan id, created_at, updated_at alanları</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">user.py</span> <span class="file-comment">→ Kullanıcı tablosu ve istemciden gelen UserCreate / UserRead kalıpları</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">project.py</span> <span class="file-comment">→ Proje ve Sprint veritabanı tabloları</span><br>
+        │&nbsp;&nbsp; └── <span class="file-name">task.py</span> <span class="file-comment">→ Görev tablosu ve O(1) etiket kümesi fonksiyonu (get_tags_set)</span><br>
+        ├── 📁 <span class="folder-name">repositories/</span> <span class="file-comment">(Veritabanı Depocuları)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">base.py</span> <span class="file-comment">→ Her model için çalışan ortak get, create, update, delete metotları</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">user_repository.py</span> <span class="file-comment">→ Email ile kullanıcı arama sorgusu</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">project_repository.py</span> <span class="file-comment">→ Proje key'i ile proje arama sorgusu</span><br>
+        │&nbsp;&nbsp; └── <span class="file-name">task_repository.py</span> <span class="file-comment">→ Projenin görevlerini çekme, filtreleme sorguları</span><br>
+        ├── 📁 <span class="folder-name">services/</span> <span class="file-comment">(İş Mantığı ve Beyin)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">auth_service.py</span> <span class="file-comment">→ Argon2 ile parola şifreleme ve JWT login token üretme</span><br>
+        │&nbsp;&nbsp; └── <span class="file-name">task_service.py</span> <span class="file-comment">→ heapq ile en acil görevi bulma, durum makinesi (State Machine) kontrolleri</span><br>
+        ├── 📁 <span class="folder-name">api/</span> <span class="file-comment">(Dış Dünyaya Açılan Kapı / Garsonlar)</span><br>
+        │&nbsp;&nbsp; ├── <span class="file-name">deps.py</span> <span class="file-comment">→ "Bu token kime ait?", "Bu kullanıcının rolü ADMIN mi?" kontrolleri</span><br>
+        │&nbsp;&nbsp; └── 📁 <span class="folder-name">v1/</span><br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── <span class="file-name">auth.py</span> <span class="file-comment">→ /register, /login, /me endpoint'leri</span><br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── <span class="file-name">projects.py</span> <span class="file-comment">→ /projects (Proje açma ve listeleme)</span><br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── <span class="file-name">tasks.py</span> <span class="file-comment">→ /tasks (Görev açma, /urgent ile en acilleri çekme)</span><br>
+        └── <span class="file-name">main.py</span> <span class="file-comment">→ Tüm bu sistemi tek bir çatı altında başlatan FastAPI ana dosyası</span>
+      </div>
+    </section>
+
+    <!-- 3. SOMUT BİR SENARYO -->
+    <section class="section">
+      <h2 class="section-title"><span>🚶‍♀️</span> 3. Bir Görev Eklediğimizde Adım Adım Ne Oluyor?</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Diyelim ki bir kullanıcı <em>"FastAPI güvenliğini test et"</em> diye yeni bir görev eklemek istedi:
+      </p>
+
+      <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>İstek Gelir: <code>api/v1/tasks.py</code></h4>
+          <p>Garson karşılar: İstekle birlikte gelen JWT token'ı <code>api/deps.py</code>'ye gönderir. "Bu token geçerli mi?" Token doğrulanır, istek yapan kişinin <strong>Sinem</strong> olduğu anlaşılır.</p>
+          <div class="step-code">current_user = get_current_user(...)  # Sinem (ID: 1, Role: ADMIN)</div>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Aşçıya İletilir: <code>services/task_service.py</code></h4>
+          <p>Aşçıbaşı iş kurallarını denetler: "Görevin ekleneceği proje gerçekten var mı? Atanan kişi şirkette çalışıyor mu?" Her şey uygunsa göreve Sinem'in ID'sini (<code>creator_id=1</code>) mühürler.</p>
+          <div class="step-code">task = Task(**task_data, creator_id=current_user.id)</div>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Kilerciye Verilir: <code>repositories/task_repository.py</code></h4>
+          <p>Kilerci görevi alır ve veritabanı oturumuna koyar (<code>session.add</code>), ardından kaydeder (<code>session.commit</code>).</p>
+          <div class="step-code">self.session.add(task) -> self.session.commit()</div>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Kullanıcıya Yanıt Döner: 201 Created</h4>
+          <p>Garson, yeni oluşan görevin bilgilerini (ID'si, başlığı, tarihi) güzel bir JSON formatında müşteriye sunar.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>TaskForge API Projesi &bull; Sinem Durmaz &bull; Projenin Röntgeni & Anlatım Rehberi</p>
+    </footer>
+  </div>
+</body>
+</html>

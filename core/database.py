@@ -16,8 +16,9 @@ engine = create_engine(
 def init_db() -> None:
     """
     Veritabanı tablolarını metadata üzerinden oluşturur.
-    Tüm modeller import edildikten sonra çağrılır.
+    Tüm modelleri import ederek tabloların SQLModel.metadata'ya kaydolmasını sağlar.
     """
+    import models  # Tabloların metadata'ya kaydolması için modeller import edilir
     SQLModel.metadata.create_all(engine)
 
 

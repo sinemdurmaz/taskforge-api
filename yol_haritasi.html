@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">5 / 8 Faz Tamamlandı (%62.5)</span>
+        <span style="color: var(--accent-blue);">6 / 8 Faz Tamamlandı (%75.0)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 62.5%;"></div>
+        <div class="progress-bar-fill" style="width: 75%;"></div>
       </div>
     </div>
 
@@ -402,10 +402,10 @@
       </div>
 
       <!-- FAZ 5 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>🛡️</span> Faz 5: API Router & Güvenlik (api/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">FastAPI router'ları, Argon2 parola hashleme, JWT Auth ve Rol Tabanlı Erişim Kontrolü (RBAC).</p>
         <div class="tags">
@@ -415,21 +415,21 @@
           <span class="tag tag-pattern">Pattern: Dependency Injection</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ api/deps.py (get_current_user ve require_role bağımlılıkları)</li>
-          <li class="current">⏳ api/v1/auth.py (/register, /login, /me)</li>
-          <li class="current">⏳ api/v1/projects.py ve api/v1/tasks.py (RESTful CRUD, Heap sıralaması)</li>
-          <li class="current">⏳ main.py FastAPI uygulaması ve router montajı</li>
+          <li class="done">✓ api/deps.py (get_current_user ve require_role bağımlılıkları)</li>
+          <li class="done">✓ api/v1/auth.py (/register, /login, /me)</li>
+          <li class="done">✓ api/v1/projects.py ve api/v1/tasks.py (RESTful CRUD, Heap & Set sorguları)</li>
+          <li class="done">✓ main.py FastAPI uygulaması, CORS ve OpenAPI Swagger montajı</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: feat(api): JWT kimlik dogrulama, RBAC ve gorev yonetim endpoint'leri eklendi
+          Commit: feat(api): JWT kimlik dogrulama, RBAC ve gorev yonetim API endpointleri eklendi
         </div>
       </div>
 
       <!-- FAZ 6 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>🧪</span> Faz 6: Otomatik Testler (tests/)</div>
-          <span class="status-badge status-wait">Planlandı</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">Pytest ile birim (unit), servis ve entegrasyon testleri.</p>
         <div class="tags">
@@ -438,12 +438,13 @@
           <span class="tag">Integration Tests</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ Veritabanı rollback ve ACID testleri</li>
-          <li class="pending">○ PriorityQueue sıralama algoritma testleri</li>
-          <li class="pending">○ Auth ve endpoint entegrasyon testleri</li>
+          <li class="current">⏳ pytest fixture'ları (in-memory test veritabanı, auth headers)</li>
+          <li class="current">⏳ PriorityQueue ve Hash Set algoritma testleri</li>
+          <li class="current">⏳ RBAC yetkisiz erişim (403 Forbidden) testleri</li>
+          <li class="current">⏳ State Machine geçersiz durum kısıtlama testleri</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: test: Repositories, Servis mantigi ve API endpoint testleri eklendi
+          Hedef Commit: test: Pytest test paketi, RBAC ve servis algoritma testleri eklendi
         </div>
       </div>
 
