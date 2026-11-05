@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge API: Servis Katmanı & Veri Yapıları Rehberi</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --card-hover: #1a253f;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --border: #1e293b;
+      --code-bg: #0b1120;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--accent-purple);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #a855f7, #38bdf8, #22c55e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #fff;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 0.98rem;
+    }
+
+    /* Grid Yapısı */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.25rem;
+      margin: 1.25rem 0;
+    }
+
+    .card {
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+    .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+    .badge-rose { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
+
+    /* Algoritma ve Heap Görseli */
+    .tree-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .tree-level {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 0.6rem 0;
+    }
+
+    .node {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.88rem;
+    }
+
+    .node-root {
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid var(--accent-rose);
+      color: #fca5a5;
+    }
+
+    .node-child {
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid var(--accent-blue);
+      color: #7dd3fc;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      margin: 1rem 0;
+    }
+
+    .alert {
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .alert strong { color: var(--accent-purple); }
+
+    /* Durum Makinesi Görseli */
+    .state-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      padding: 1.25rem;
+      background: var(--code-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .state-badge {
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .state-todo { background: #334155; color: #cbd5e1; }
+    .state-progress { background: #1e3a8a; color: #93c5fd; }
+    .state-review { background: #581c87; color: #d8b4fe; }
+    .state-done { background: #14532d; color: #86efac; }
+    .state-arrow { color: var(--text-muted); font-size: 1.1rem; }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge-top">İş Mantığı &bull; Faz 4</span>
+      <h1>Servis Katmanı, Veri Yapıları & Algoritmalar</h1>
+      <p>TaskForge API'nin beyni: Min-Heap (Öncelik Kuyruğu), O(1) Hash Set, Durum Makinesi ve ACID İşlemleri.</p>
+    </header>
+
+    <!-- 1. SERVİS KATMANI NEDİR? -->
+    <section class="section">
+      <h2 class="section-title"><span>🧠</span> 1. Servis Katmanı (Service Layer) Neden Var?</h2>
+      <p class="section-desc">Controller (API Router) ile Veritabanı (Repository) arasında iş mantığını yürüten kurumsal merkez:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="badge badge-rose">❌ Servis Katmanı Olmazsa</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Parola doğrulama, izin kontrolleri, durum geçişi kuralları ve sıralama algoritmaları doğrudan FastAPI router endpoint'leri içine yazılır. Kod şişer, test etmek imkansızlaşır ve SOLID ihlal edilir.
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-green">✅ TaskService & AuthService İle</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Tüm iş kuralları bağımsız Python sınıflarında toplanır. Bir görev oluşturulurken projenin varlığı, atanan kişinin aktifliği ve öncelik sıralaması tek bir metot (<code>create_task</code>) içinde garanti edilir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. VERİ YAPISI: PRIORITY QUEUE & MIN-HEAP -->
+    <section class="section">
+      <h2 class="section-title"><span>⚡</span> 2. Veri Yapısı: Min-Heap & Priority Queue (heapq)</h2>
+      <p class="section-desc">Yüzlerce görev arasından en acil olanı bulmak için $O(N \log N)$ yerine <strong>$O(1)$</strong> kök erişimi sunan Min-Heap ikili ağacı:</p>
+
+      <div class="tree-box">
+        <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.75rem;">Binary Min-Heap Ağaç Yapısı</div>
+        <div>
+          <span class="node node-root">[1] CRITICAL (Deadline: Bugün 18:00)</span>
+        </div>
+        <div style="color: var(--accent-rose); margin: 0.2rem 0;">/ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \</div>
+        <div class="tree-level">
+          <span class="node node-child">[2] HIGH (Deadline: Yarın)</span>
+          <span class="node node-child">[3] MEDIUM (Deadline: 3 Gün)</span>
+        </div>
+      </div>
+
+      <div class="alert">
+        <strong>Neden Min-Heap?</strong> Min-Heap veri yapısında ağacın tepesi (Root) her zaman en küçük değere (yani en yüksek önceliğe) sahiptir. <code>heapq.heappop()</code> metodu ile en acil görev <u>logaritmik zamanda</u> çekilir.
+      </div>
+
+      <pre><code>import heapq
+
+# Puanlama: CRITICAL=1, HIGH=2, MEDIUM=3, LOW=4
+heap = []
+for task in tasks:
+    weight = PRIORITY_WEIGHTS[task.priority]
+    # Min-Heap'e ekle: O(log N)
+    heapq.heappush(heap, (weight, task.deadline.timestamp(), task.id, task))
+
+# En acil N görevi O(1) / O(log N) hızla getir:
+most_urgent = [heapq.heappop(heap)[3] for _ in range(top_n)]</code></pre>
+    </section>
+
+    <!-- 3. VERİ YAPISI: HASH SET O(1) -->
+    <section class="section">
+      <h2 class="section-title"><span>🔍</span> 3. Veri Yapısı: Hash Set (set) ile O(1) Etiket Filtreleme</h2>
+      <p class="section-desc">Etiket ararken liste üzerinde gezinmek yerine matematiksel küme kesişimi kullanıyoruz:</p>
+
+      <pre><code># Kullanıcının aradığı zorunlu etiketler
+required_tags = {"backend", "security"}
+
+# Görevin etiketleri küme (Set) olarak alınır:
+# task_tags = {"backend", "security", "docker", "python"}
+
+# O(1) Alt Küme Kontrolü (Subset check):
+if required_tags.issubset(task_tags):
+    # Görev tüm istenen etiketlere sahiptir!</code></pre>
+
+      <p style="color: var(--text-muted); font-size: 0.92rem;">
+        Hash Set, elemanlarını bellek adreslerine göre indekslediği için bir elemanın kümede olup olmadığını <strong>ortalama $O(1)$ sürede</strong> doğrular.
+      </p>
+    </section>
+
+    <!-- 4. DURUM MAKİNESİ (STATE MACHINE) -->
+    <section class="section">
+      <h2 class="section-title"><span>🔀</span> 4. State Pattern & Görev Durum Makinesi</h2>
+      <p class="section-desc">Bir görevin kurallara aykırı olarak doğrudan <code>TODO -> DONE</code> olmasına izin vermeyen iş kuralı kısıtlaması:</p>
+
+      <div class="state-flow">
+        <span class="state-badge state-todo">TODO</span>
+        <span class="state-arrow">➔</span>
+        <span class="state-badge state-progress">IN_PROGRESS</span>
+        <span class="state-arrow">➔</span>
+        <span class="state-badge state-review">IN_REVIEW</span>
+        <span class="state-arrow">➔</span>
+        <span class="state-badge state-done">DONE</span>
+      </div>
+
+      <p style="color: var(--text-muted); font-size: 0.92rem;">
+        Eğer bir geliştirici henüz incelemeye (<code>IN_REVIEW</code>) sunulmamış bir görevi doğrudan <code>DONE</code> yapmaya çalışırsa, <code>TaskService.change_status</code> anında <code>ValueError</code> fırlatır ve ACID kuralları gereği veritabanına hiçbir şey kaydedilmez.
+      </p>
+    </section>
+
+    <!-- 5. ARGON2 KİMLİK DOĞRULAMA -->
+    <section class="section">
+      <h2 class="section-title"><span>🔒</span> 5. AuthService & Argon2 Şifreleme</h2>
+      <p class="section-desc">OWASP standartlarına göre en güvenli parola hashleme mekanizması:</p>
+      
+      <div class="grid-2">
+        <div class="card">
+          <span class="badge badge-purple">Argon2id Algoritması</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            GPU ve ASIC tabanlı donanımsal saldırılara karşı bellek-zorluğu (memory-hard) kullanan günümüzün en güçlü hash algoritmasıdır.
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-blue">JWT Token Üretimi</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Doğrulanan kullanıcılar için süre kısıtlı (Expiration Time) ve kullanıcı ID'si ile rolünü taşıyan imzalı dijital anahtar üretilir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>TaskForge API Projesi &bull; Sinem Durmaz &bull; Faz 4 İş Mantığı & Algoritmalar Rehberi</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">4 / 8 Faz Tamamlandı (%50.0)</span>
+        <span style="color: var(--accent-blue);">5 / 8 Faz Tamamlandı (%62.5)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 50%;"></div>
+        <div class="progress-bar-fill" style="width: 62.5%;"></div>
       </div>
     </div>
 
@@ -378,10 +378,10 @@
       </div>
 
       <!-- FAZ 4 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>🧠</span> Faz 4: Servis Katmanı & Veri Yapıları (services/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">İş mantığı kuralları, ACID multi-table transaction yönetimi ve algoritma/veri yapıları optimizasyonları.</p>
         <div class="tags">
@@ -391,21 +391,21 @@
           <span class="tag tag-pattern">Pattern: State Pattern</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ TaskService: Görev atama ve durum değiştirme işlemleri</li>
-          <li class="current">⏳ heapq ile kritik görevleri $O(1)$ sürede getiren öncelik kuyruğu</li>
-          <li class="current">⏳ set veri yapısı ile etiket ve yetki kümeleme optimizasyonu</li>
-          <li class="current">⏳ Rollback destekli atomik transaction metotları</li>
+          <li class="done">✓ TaskService: Görev atama ve durum makinesi (State Machine) denetimi</li>
+          <li class="done">✓ heapq ile en acil görevleri O(1) hızla çeken Min-Heap öncelik kuyruğu</li>
+          <li class="done">✓ Hash Set ile O(1) küme kesişim etiket süzgeci (filter_by_tags)</li>
+          <li class="done">✓ AuthService: Argon2 şifreleme ve JWT token üretimi</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: feat(services): TaskService, ACID transaction yonetimi ve Priority Queue eklendi
+          Commit: feat(services): TaskService, AuthService, Heap tabanli oncelik kuyrugu ve Set optimizasyonu eklendi
         </div>
       </div>
 
       <!-- FAZ 5 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>🛡️</span> Faz 5: API Router & Güvenlik (api/)</div>
-          <span class="status-badge status-wait">Planlandı</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">FastAPI router'ları, Argon2 parola hashleme, JWT Auth ve Rol Tabanlı Erişim Kontrolü (RBAC).</p>
         <div class="tags">
@@ -415,9 +415,10 @@
           <span class="tag tag-pattern">Pattern: Dependency Injection</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ /auth (register, login, token yenileme)</li>
-          <li class="pending">○ /projects ve /tasks CRUD router'ları</li>
-          <li class="pending">○ Role checking dependency (Admin vs Developer)</li>
+          <li class="current">⏳ api/deps.py (get_current_user ve require_role bağımlılıkları)</li>
+          <li class="current">⏳ api/v1/auth.py (/register, /login, /me)</li>
+          <li class="current">⏳ api/v1/projects.py ve api/v1/tasks.py (RESTful CRUD, Heap sıralaması)</li>
+          <li class="current">⏳ main.py FastAPI uygulaması ve router montajı</li>
         </ul>
         <div class="commit-box">
           Hedef Commit: feat(api): JWT kimlik dogrulama, RBAC ve gorev yonetim endpoint'leri eklendi
