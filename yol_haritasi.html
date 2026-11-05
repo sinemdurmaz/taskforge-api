@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">3 / 8 Faz Tamamlandı (%37.5)</span>
+        <span style="color: var(--accent-blue);">4 / 8 Faz Tamamlandı (%50.0)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 37.5%;"></div>
+        <div class="progress-bar-fill" style="width: 50%;"></div>
       </div>
     </div>
 
@@ -355,10 +355,10 @@
       </div>
 
       <!-- FAZ 3 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>🗄️</span> Faz 3: Repository Katmanı (repositories/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">Veritabanı erişimini iş mantığından ayıran kurumsal Repository Tasarım Deseni.</p>
         <div class="tags">
@@ -368,20 +368,20 @@
           <span class="tag tag-oop">OOP: Abstraction (Soyutlama)</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ Generic BaseRepository[T] soyut sınıfı</li>
-          <li class="current">⏳ TaskRepository (özel filtreler, sprint ve öncelik sorguları)</li>
-          <li class="current">⏳ UserRepository ve ProjectRepository</li>
+          <li class="done">✓ Generic BaseRepository[T] soyut sınıfı (CRUD & pagination)</li>
+          <li class="done">✓ TaskRepository (özel filtreler, sprint ve öncelik sorguları)</li>
+          <li class="done">✓ UserRepository (get_by_email) ve ProjectRepository (get_by_key)</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: feat(repositories): Generic BaseRepository ve TaskRepository uygulandi
+          Commit: feat(repositories): Generic BaseRepository ve ozel repository siniflari uygulandi
         </div>
       </div>
 
       <!-- FAZ 4 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>🧠</span> Faz 4: Servis Katmanı & Veri Yapıları (services/)</div>
-          <span class="status-badge status-wait">Planlandı</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">İş mantığı kuralları, ACID multi-table transaction yönetimi ve algoritma/veri yapıları optimizasyonları.</p>
         <div class="tags">
@@ -391,10 +391,10 @@
           <span class="tag tag-pattern">Pattern: State Pattern</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ TaskService: Görev atama ve durum değiştirme işlemleri</li>
-          <li class="pending">○ heapq ile kritik görevleri $O(1)$ sürede getiren öncelik kuyruğu</li>
-          <li class="pending">○ set veri yapısı ile etiket ve yetki kümeleme optimizasyonu</li>
-          <li class="pending">○ Rollback destekli atomik transaction metotları</li>
+          <li class="current">⏳ TaskService: Görev atama ve durum değiştirme işlemleri</li>
+          <li class="current">⏳ heapq ile kritik görevleri $O(1)$ sürede getiren öncelik kuyruğu</li>
+          <li class="current">⏳ set veri yapısı ile etiket ve yetki kümeleme optimizasyonu</li>
+          <li class="current">⏳ Rollback destekli atomik transaction metotları</li>
         </ul>
         <div class="commit-box">
           Hedef Commit: feat(services): TaskService, ACID transaction yonetimi ve Priority Queue eklendi
