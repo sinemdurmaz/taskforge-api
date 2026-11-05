@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">2 / 8 Faz Tamamlandı (%25.0)</span>
+        <span style="color: var(--accent-blue);">3 / 8 Faz Tamamlandı (%37.5)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 25%;"></div>
+        <div class="progress-bar-fill" style="width: 37.5%;"></div>
       </div>
     </div>
 
@@ -331,44 +331,46 @@
       </div>
 
       <!-- FAZ 2 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>📦</span> Faz 2: Domain Modelleri (models/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">SQLModel ile güçlü OOP kalıtım mimarisi: User, Project, Task, Sprint ve ActivityLog varlıkları.</p>
         <div class="tags">
           <span class="tag tag-oop">OOP: Inheritance (Kalıtım)</span>
           <span class="tag tag-solid">SOLID: Open/Closed</span>
+          <span class="tag tag-ds">Veri Yapısı: Hash Set (O(1))</span>
           <span class="tag">SQLModel Entities & DTOs</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ Base model sınıfı (id, created_at, updated_at)</li>
-          <li class="current">⏳ User modeli (roller: Admin, Manager, Developer)</li>
-          <li class="current">⏳ Project ve Sprint modelleri</li>
-          <li class="current">⏳ Task modeli (Enum: Priority & Status, Foreign Keys)</li>
+          <li class="done">✓ Base model sınıfı (TimeStampedModel: id, created_at, updated_at)</li>
+          <li class="done">✓ User modeli (roller: Admin, Manager, Developer)</li>
+          <li class="done">✓ Project ve Sprint modelleri (key, foreign keys)</li>
+          <li class="done">✓ Task modeli (Enum: Priority & Status, O(1) get_tags_set)</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: feat(models): User, Project ve Task domain modelleri olusturuldu
+          Commit: feat(models): User, Project, Sprint ve Task domain modelleri eklendi
         </div>
       </div>
 
       <!-- FAZ 3 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>🗄️</span> Faz 3: Repository Katmanı (repositories/)</div>
-          <span class="status-badge status-wait">Planlandı</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">Veritabanı erişimini iş mantığından ayıran kurumsal Repository Tasarım Deseni.</p>
         <div class="tags">
           <span class="tag tag-pattern">Pattern: Repository</span>
           <span class="tag tag-solid">SOLID: Dependency Inversion</span>
+          <span class="tag tag-solid">SOLID: Interface Segregation</span>
           <span class="tag tag-oop">OOP: Abstraction (Soyutlama)</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ Generic BaseRepository[T] soyut sınıfı</li>
-          <li class="pending">○ TaskRepository (özel filtreler, sprint bazlı sorgular)</li>
-          <li class="pending">○ UserRepository ve ProjectRepository</li>
+          <li class="current">⏳ Generic BaseRepository[T] soyut sınıfı</li>
+          <li class="current">⏳ TaskRepository (özel filtreler, sprint ve öncelik sorguları)</li>
+          <li class="current">⏳ UserRepository ve ProjectRepository</li>
         </ul>
         <div class="commit-box">
           Hedef Commit: feat(repositories): Generic BaseRepository ve TaskRepository uygulandi
