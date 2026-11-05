@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge API: Geliştirme Yol Haritası</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --card-hover: #1a253f;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --border: #1e293b;
+      --code-bg: #0b1120;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(34, 197, 94, 0.12);
+      color: var(--accent-green);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* İlerleme Çubuğu */
+    .progress-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .progress-bar-bg {
+      background: var(--code-bg);
+      border-radius: 999px;
+      height: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      height: 100%;
+      width: 15%; /* Faz 0 tamamlandı, Faz 1 başında */
+      transition: width 0.4s ease;
+    }
+
+    /* Yol Haritası Kartları */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .stage-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .stage-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .stage-card.completed {
+      border-left: 4px solid var(--accent-green);
+    }
+
+    .stage-card.active {
+      border-left: 4px solid var(--accent-blue);
+      box-shadow: 0 0 20px -5px rgba(56, 189, 248, 0.2);
+    }
+
+    .stage-card.pending {
+      border-left: 4px solid var(--border);
+      opacity: 0.85;
+    }
+
+    .stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .stage-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .status-done {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .status-current {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .status-wait {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .stage-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      color: #cbd5e1;
+    }
+
+    .tag-oop { color: #c084fc; border-color: rgba(192, 132, 252, 0.3); }
+    .tag-solid { color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .tag-acid { color: #f43f5e; border-color: rgba(244, 63, 94, 0.3); }
+    .tag-pattern { color: #2dd4bf; border-color: rgba(45, 212, 191, 0.3); }
+    .tag-ds { color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
+
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.92rem;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .check-list li.done {
+      color: var(--accent-green);
+    }
+
+    .check-list li.current {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+
+    .check-list li.pending {
+      color: var(--text-muted);
+    }
+
+    .commit-box {
+      margin-top: 1rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--code-bg);
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      border-left: 3px solid var(--accent-blue);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge-top">Geliştirme Planı</span>
+      <h1>TaskForge API Yol Haritası</h1>
+      <p>Atomic Git Commit'leri, OOP, SOLID, ACID ve Veri Yapıları Odaklı Fazlar</p>
+    </header>
+
+    <!-- İlerleme Özeti -->
+    <div class="progress-box">
+      <div class="progress-header">
+        <span>Genel Proje İlerlemesi</span>
+        <span style="color: var(--accent-blue);">1 / 8 Faz Tamamlandı (%12.5)</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill"></div>
+      </div>
+    </div>
+
+    <!-- Fazlar Listesi -->
+    <div class="timeline">
+
+      <!-- FAZ 0 -->
+      <div class="stage-card completed">
+        <div class="stage-header">
+          <div class="stage-title"><span>🚀</span> Faz 0: Temel Hazırlık & Dizin Mimarisi</div>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
+        </div>
+        <p class="stage-desc">Git reposu, Python sanal ortamı, kurumsal katmanlı klasör yapısı ve paket bağımlılıkları kuruldu.</p>
+        <div class="tags">
+          <span class="tag">Clean Architecture</span>
+          <span class="tag">Virtualenv</span>
+          <span class="tag">Git Setup</span>
+        </div>
+        <ul class="check-list">
+          <li class="done">✓ Git repo ve GitHub remote bağlantısı yapıldı</li>
+          <li class="done">✓ .gitignore, requirements.txt oluşturuldu</li>
+          <li class="done">✓ Katmanlı mimari klasörleri açıldı (core, models, repositories, services, api)</li>
+        </ul>
+        <div class="commit-box">
+          Commit: fed3060 chore: Proje dizin yapisi, paket bagimliliklari ve mimari iskelet kuruldu
+        </div>
+      </div>
+
+      <!-- FAZ 1 -->
+      <div class="stage-card active">
+        <div class="stage-header">
+          <div class="stage-title"><span>⚙️</span> Faz 1: Çekirdek Altyapı (core/)</div>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
+        </div>
+        <p class="stage-desc">Pydantic tabanlı konfigürasyon yönetimi, veritabanı motoru ve ACID uyumlu Session yaşam döngüsü.</p>
+        <div class="tags">
+          <span class="tag tag-solid">SOLID: Single Responsibility</span>
+          <span class="tag tag-acid">ACID: Atomicity & Durability</span>
+          <span class="tag tag-pattern">Pattern: Dependency Injection</span>
+          <span class="tag tag-oop">OOP: Encapsulation</span>
+        </div>
+        <ul class="check-list">
+          <li class="current">⏳ core/config.py (Ortam değişkenleri ve Settings sınıfı)</li>
+          <li class="current">⏳ core/database.py (Engine, init_db ve get_session generator)</li>
+          <li class="current">⏳ .env ve .env.example şablonları</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: feat(core): Konfigurasyon yonetimi ve ACID uyumlu veritabani motoru eklendi
+        </div>
+      </div>
+
+      <!-- FAZ 2 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>📦</span> Faz 2: Domain Modelleri (models/)</div>
+          <span class="status-badge status-wait">Sırada</span>
+        </div>
+        <p class="stage-desc">SQLModel ile güçlü OOP kalıtım mimarisi: User, Project, Task, Sprint ve ActivityLog varlıkları.</p>
+        <div class="tags">
+          <span class="tag tag-oop">OOP: Inheritance (Kalıtım)</span>
+          <span class="tag tag-solid">SOLID: Open/Closed</span>
+          <span class="tag">SQLModel Entities & DTOs</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ Base model sınıfı (id, created_at, updated_at)</li>
+          <li class="pending">○ User modeli (roller: Admin, Manager, Developer)</li>
+          <li class="pending">○ Project ve Sprint modelleri</li>
+          <li class="pending">○ Task modeli (Enum: Priority & Status, Foreign Keys)</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: feat(models): User, Project ve Task domain modelleri olusturuldu
+        </div>
+      </div>
+
+      <!-- FAZ 3 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>🗄️</span> Faz 3: Repository Katmanı (repositories/)</div>
+          <span class="status-badge status-wait">Planlandı</span>
+        </div>
+        <p class="stage-desc">Veritabanı erişimini iş mantığından ayıran kurumsal Repository Tasarım Deseni.</p>
+        <div class="tags">
+          <span class="tag tag-pattern">Pattern: Repository</span>
+          <span class="tag tag-solid">SOLID: Dependency Inversion</span>
+          <span class="tag tag-oop">OOP: Abstraction (Soyutlama)</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ Generic BaseRepository[T] soyut sınıfı</li>
+          <li class="pending">○ TaskRepository (özel filtreler, sprint bazlı sorgular)</li>
+          <li class="pending">○ UserRepository ve ProjectRepository</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: feat(repositories): Generic BaseRepository ve TaskRepository uygulandi
+        </div>
+      </div>
+
+      <!-- FAZ 4 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>🧠</span> Faz 4: Servis Katmanı & Veri Yapıları (services/)</div>
+          <span class="status-badge status-wait">Planlandı</span>
+        </div>
+        <p class="stage-desc">İş mantığı kuralları, ACID multi-table transaction yönetimi ve algoritma/veri yapıları optimizasyonları.</p>
+        <div class="tags">
+          <span class="tag tag-acid">ACID Transactions</span>
+          <span class="tag tag-ds">Veri Yapısı: Priority Queue (Heap)</span>
+          <span class="tag tag-ds">Veri Yapısı: Hash Set (O(1))</span>
+          <span class="tag tag-pattern">Pattern: State Pattern</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ TaskService: Görev atama ve durum değiştirme işlemleri</li>
+          <li class="pending">○ heapq ile kritik görevleri $O(1)$ sürede getiren öncelik kuyruğu</li>
+          <li class="pending">○ set veri yapısı ile etiket ve yetki kümeleme optimizasyonu</li>
+          <li class="pending">○ Rollback destekli atomik transaction metotları</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: feat(services): TaskService, ACID transaction yonetimi ve Priority Queue eklendi
+        </div>
+      </div>
+
+      <!-- FAZ 5 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>🛡️</span> Faz 5: API Router & Güvenlik (api/)</div>
+          <span class="status-badge status-wait">Planlandı</span>
+        </div>
+        <p class="stage-desc">FastAPI router'ları, Argon2 parola hashleme, JWT Auth ve Rol Tabanlı Erişim Kontrolü (RBAC).</p>
+        <div class="tags">
+          <span class="tag">JWT Auth</span>
+          <span class="tag">Argon2</span>
+          <span class="tag">RBAC</span>
+          <span class="tag tag-pattern">Pattern: Dependency Injection</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ /auth (register, login, token yenileme)</li>
+          <li class="pending">○ /projects ve /tasks CRUD router'ları</li>
+          <li class="pending">○ Role checking dependency (Admin vs Developer)</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: feat(api): JWT kimlik dogrulama, RBAC ve gorev yonetim endpoint'leri eklendi
+        </div>
+      </div>
+
+      <!-- FAZ 6 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>🧪</span> Faz 6: Otomatik Testler (tests/)</div>
+          <span class="status-badge status-wait">Planlandı</span>
+        </div>
+        <p class="stage-desc">Pytest ile birim (unit), servis ve entegrasyon testleri.</p>
+        <div class="tags">
+          <span class="tag">Pytest</span>
+          <span class="tag">Mocking</span>
+          <span class="tag">Integration Tests</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ Veritabanı rollback ve ACID testleri</li>
+          <li class="pending">○ PriorityQueue sıralama algoritma testleri</li>
+          <li class="pending">○ Auth ve endpoint entegrasyon testleri</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: test: Repositories, Servis mantigi ve API endpoint testleri eklendi
+        </div>
+      </div>
+
+      <!-- FAZ 7 -->
+      <div class="stage-card pending">
+        <div class="stage-header">
+          <div class="stage-title"><span>🐳</span> Faz 7: Docker & CI/CD Pipeline</div>
+          <span class="status-badge status-wait">Planlandı</span>
+        </div>
+        <p class="stage-desc">Projenin konteynerize edilmesi ve GitHub Actions otomatik test hattı.</p>
+        <div class="tags">
+          <span class="tag">Docker</span>
+          <span class="tag">Docker Compose</span>
+          <span class="tag">GitHub Actions</span>
+        </div>
+        <ul class="check-list">
+          <li class="pending">○ Multi-stage Dockerfile</li>
+          <li class="pending">○ docker-compose.yml</li>
+          <li class="pending">○ .github/workflows/test.yml</li>
+        </ul>
+        <div class="commit-box">
+          Hedef Commit: ci: Docker ve GitHub Actions test pipeline'i kuruldu
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <p>TaskForge API Yol Haritası &bull; Canlı olarak her fazda güncellenecektir.</p>
+    </footer>
+  </div>
+</body>
+</html>

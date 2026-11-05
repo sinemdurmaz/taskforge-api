@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge API: Mimari, Prensipler ve Tasarım Rehberi</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --card-hover: #1a253f;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+      --accent-green: #22c55e;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-teal: #14b8a6;
+      --border: #1e293b;
+      --code-bg: #0b1120;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #38bdf8, #a855f7, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Hızlı Gezinme Menüsü */
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .quick-nav a {
+      text-decoration: none;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .quick-nav a:hover {
+      border-color: var(--accent-blue);
+      background: var(--card-hover);
+      color: var(--accent-blue);
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+    .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+    .badge-rose { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); }
+    .badge-teal { background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .card-example {
+      font-size: 0.85rem;
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent-blue);
+      padding: 0.6rem 0.8rem;
+      border-radius: 4px;
+      color: #e2e8f0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      margin: 1rem 0;
+    }
+
+    .keyword { color: #f43f5e; font-weight: 600; }
+    .cls { color: #38bdf8; font-weight: 600; }
+    .func { color: #a855f7; }
+    .str { color: #22c55e; }
+    .comment { color: #64748b; font-style: italic; }
+
+    .alert {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .alert strong { color: var(--accent-blue); }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge-top">TaskForge API &bull; Kurumsal Mimari</span>
+      <h1>Mimari, Prensipler ve Tasarım Rehberi</h1>
+      <p>Projemizde uygulayacağımız OOP, SOLID, ACID, Tasarım Desenleri ve Veri Yapılarının pratik backend rehberi.</p>
+      
+      <div class="quick-nav">
+        <a href="#oop">🧩 1. OOP Prensipleri</a>
+        <a href="#solid">📐 2. SOLID Prensipleri</a>
+        <a href="#acid">🛡️ 3. ACID Prensipleri</a>
+        <a href="#patterns">🏗️ 4. Tasarım Desenleri</a>
+        <a href="#data-structures">⚡ 5. Veri Yapıları</a>
+        <a href="#git">📌 6. Git Standartları</a>
+      </div>
+    </header>
+
+    <!-- 1. OOP PRENSİPLERİ -->
+    <section id="oop" class="section">
+      <h2 class="section-title"><span>🧩</span> 1. Nesne Yönelimli Programlama (OOP)</h2>
+      <p class="section-desc">TaskForge'da kod tekrarını önleyen, iş mantığını koruyan ve genişletilebilirliği sağlayan 4 temel direk:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="card-badge badge-blue">Kapsülleme &bull; Encapsulation</span>
+          <h3>Veri ve Metotları Bir Arada Tutma</h3>
+          <p>Verileri dış dünyadan gizleyip kontrollü metotlar ile erişim sağlama. Model alanlarının doğrulanması ve ayarların `Settings` sınıfında tutulması.</p>
+          <div class="card-example">
+            class Settings(BaseModel):<br>
+            &nbsp;&nbsp;DATABASE_URL: str = ...<br>
+            # Ayarlar dağınık değil, bir nesnede kapsüllü
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-purple">Kalıtım &bull; Inheritance</span>
+          <h3>Kod Tekrarını Ortadan Kaldırma</h3>
+          <p>Ortak alanları (`id`, `created_at`, `updated_at`) bir temel sınıfta toplayıp diğer modellerin (`User`, `Task`, `Project`) buradan türemesini sağlama.</p>
+          <div class="card-example">
+            class TaskBase(SQLModel):<br>
+            &nbsp;&nbsp;title: str<br>
+            class Task(TaskBase, table=True): ...<br>
+            class TaskCreate(TaskBase): ...
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-green">Soyutlama &bull; Abstraction</span>
+          <h3>Karmaşıklığı Arayüz Arkasına Gizleme</h3>
+          <p>Veritabanı işlemlerinin detaylarını (SQL sorguları, oturum yönetimi) `BaseRepository` soyut sınıfı arkasına saklarız. Servis katmanı SQL görmez.</p>
+          <div class="card-example">
+            class BaseRepository[T](ABC):<br>
+            &nbsp;&nbsp;@abstractmethod<br>
+            &nbsp;&nbsp;def get_by_id(self, id: int) -> T: pass
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-amber">Çok Biçimlilik &bull; Polymorphism</span>
+          <h3>Aynı Arayüz, Farklı Davranış</h3>
+          <p>Farklı nesnelerin aynı metot çağrısına kendi doğalarına göre yanıt vermesi. Örn: `EmailNotificationService` ve `WebhookNotificationService` aynı `send()` metodunu farklı uygular.</p>
+          <div class="card-example">
+            notifier: NotificationService<br>
+            notifier.send("Görev atandı") # E-posta veya Slack
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SOLID PRENSİPLERİ -->
+    <section id="solid" class="section">
+      <h2 class="section-title"><span>📐</span> 2. SOLID Yazılım Prensipleri</h2>
+      <p class="section-desc">Büyük ölçekli yazılımların çürümesini önleyen, bakımını ve test edilebilirliğini kolaylaştıran 5 kural:</p>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <span class="card-badge badge-blue">S &bull; Single Responsibility (Tek Sorumluluk)</span>
+        <h3>Her sınıfın/modülün değişmek için yalnızca BİR nedeni olmalıdır.</h3>
+        <p><strong>TaskForge Örneği:</strong> `TaskRepository` sadece veritabanı CRUD işlemlerini yapar. Bildirim göndermek veya iş kuralı işletmek `TaskService`'in sorumluluğundadır. `config.py` ise sadece ayarları yükler.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <span class="card-badge badge-green">O &bull; Open / Closed (Açık / Kapalı)</span>
+        <h3>Sınıflar genişletmeye AÇIK, kaynak kodu değiştirmeye KAPALI olmalıdır.</h3>
+        <p><strong>TaskForge Örneği:</strong> Yeni bir görev filtreleme türü veya bildirim kanalı eklemek istediğimizde var olan çalışan sınıfları değiştirmek yerine yeni alt sınıflar ekleriz.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <span class="card-badge badge-purple">L &bull; Liskov Substitution (Liskov Yerine Geçebilme)</span>
+        <h3>Türemiş sınıflar, üst sınıflarının yerine hatasız geçebilmelidir.</h3>
+        <p><strong>TaskForge Örneği:</strong> `BaseRepository` beklenen her yere `TaskRepository` veya `ProjectRepository` verdiğimizde kodun çalışması bozulmamalıdır.</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 1rem;">
+        <span class="card-badge badge-amber">I &bull; Interface Segregation (Arayüz Ayrımı)</span>
+        <h3>İstemciler kullanmadıkları metotlara bağımlı olmaya zorlanmamalıdır.</h3>
+        <p><strong>TaskForge Örneği:</strong> Bütün fonksiyonları tek bir dev arayüzde toplamak yerine `ReadableRepository` ve `WritableRepository` gibi küçük, amaca yönelik arayüzler tasarlarız.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-badge badge-rose">D &bull; Dependency Inversion (Bağımlılığı Tersine Çevirme)</span>
+        <h3>Üst seviye modüller alt seviye modüllere doğrudan değil, SOYUTLAMALARA bağımlı olmalıdır.</h3>
+        <p><strong>TaskForge Örneği:</strong> `TaskService`, doğrudan SQLite bağlantısına bağımlı olmak yerine `TaskRepository` arayüzüne bağımlıdır. Böylece veritabanını PostgreSQL veya bellek-içi (mock) veritabanı ile tek satırda değiştirebiliriz.</p>
+      </div>
+    </section>
+
+    <!-- 3. ACID PRENSİPLERİ -->
+    <section id="acid" class="section">
+      <h2 class="section-title"><span>🛡️</span> 3. ACID Veritabanı Prensipleri</h2>
+      <p class="section-desc">Finans, görev ve kurumsal verilerde veri kaybını ve tutarsızlığı önleyen işlem (Transaction) kuralları:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="card-badge badge-rose">Atomicity &bull; Bölünemezlik</span>
+          <h3>Ya Hep Ya Hiç</h3>
+          <p>Birden fazla adımlı bir işlemde (örn: Görevi tamamla + Kullanıcıya puan ekle + Bildirim logu yaz) herhangi bir adım çökerse, yapılan tüm değişiklikler <code>rollback()</code> ile geri alınır.</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-green">Consistency &bull; Tutarlılık</span>
+          <h3>Kurallara Daima Uygunluk</h3>
+          <p>İşlem öncesi ve sonrası veritabanı kısıtlamaları (Foreign Key, Unique constraint, Check constraint) korunur. Projesi silinmiş öksüz görevler oluşamaz.</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-blue">Isolation &bull; Yalıtım</span>
+          <h3>Eşzamanlı İşlemlerin Birbirini Etkilememesi</h3>
+          <p>Aynı anda 50 kullanıcı farklı görevleri güncellese bile, işlemler birbirinin yarım kalmış verisini göremez (Transaction Isolation Levels).</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-amber">Durability &bull; Kalıcılık</span>
+          <h3>Kayıt Diskte Güvende</h3>
+          <p>Bir kez <code>commit()</code> edildikten sonra sunucunun elektriği kesilse bile veriler kaybolmaz; WAL (Write-Ahead Logging) ile diske yazılmış durumdadır.</p>
+        </div>
+      </div>
+
+      <div class="alert">
+        <strong>TaskForge Altyapımızda ACID:</strong> <code>core/database.py</code> içindeki <code>get_session()</code> generator'ı ile her isteği otomatik transaction kapsamına alıyoruz. Hata olduğunda otomatik <code>session.rollback()</code> devreye giriyor.
+      </div>
+    </section>
+
+    <!-- 4. TASARIM DESENLERİ -->
+    <section id="patterns" class="section">
+      <h2 class="section-title"><span>🏗️</span> 4. Projede Kullanacağımız Tasarım Desenleri</h2>
+      <p class="section-desc">Sektör standardı backend mimarilerinde her gün kullanılan çözümler:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="card-badge badge-teal">Repository Pattern</span>
+          <h3>Veritabanı Katmanını Soyutlama</h3>
+          <p>Veri tabanındaki CRUD işlemlerini iş mantığından (Business Logic) tamamen ayırır. SQL sorguları `repositories/` içine hapsedilir.</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-blue">Dependency Injection (DI)</span>
+          <h3>Bağımlılık Enjeksiyonu</h3>
+          <p>Bir sınıfın ihtiyaç duyduğu bağımlılıkları kendisinin oluşturması yerine dışarıdan (FastAPI <code>Depends()</code>) parametre olarak alması.</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-purple">Unit of Work</span>
+          <h3>Toplu Değişiklik Yönetimi</h3>
+          <p>Bir oturum (session) boyunca yapılan birden fazla tablo değişikliğini tek bir atomik commit olarak tek seferde kaydetme.</p>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-amber">State Pattern</span>
+          <h3>Durum Makinesi (Görev Durumları)</h3>
+          <p>Bir görevin `TODO -> IN_PROGRESS -> IN_REVIEW -> DONE` geçişlerini if-else karmaşası yerine durum sınıfları ile yönetmek.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. VERİ YAPILARI -->
+    <section id="data-structures" class="section">
+      <h2 class="section-title"><span>⚡</span> 5. Aktif Kullanılacak Veri Yapıları</h2>
+      <p class="section-desc">Projede sadece kütüphane çağırmayacağız; gerçek veri yapılarının hız avantajından faydalanacağız:</p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="card-badge badge-rose">Priority Queue &bull; Heap (heapq)</span>
+          <h3>Öncelik Kuyruğu ile Kritik Görev Sıralama</h3>
+          <p>Görevleri tarihlerine ve önem derecelerine (Critical, High, Medium) göre en verimli şekilde sıralamak için <strong>Min-Heap</strong> kullanacağız. En kritik görev $O(1)$ sürede elde edilir.</p>
+          <div class="card-example">
+            import heapq<br>
+            # (priority_score, deadline, task)<br>
+            heapq.heappush(task_queue, (1, "2026-11-06", task))
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="card-badge badge-teal">Hash Set (set)</span>
+          <h3>O(1) Benzersiz Etiket & Yetki Kontrolü</h3>
+          <p>Görev etiketlerinin (tags) tekilleştirilmesi ve kullanıcı rollerinin yetki kümeleriyle kesişim kontrolü için $O(1)$ sürede çalışan Hash Set veri yapısı kullanılır.</p>
+          <div class="card-example">
+            required_perms = {"task:write", "project:admin"}<br>
+            if required_perms.issubset(user_perms): ...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ATOMİK GİT COMMİT STANDARTLARI -->
+    <section id="git" class="section">
+      <h2 class="section-title"><span>📌</span> 6. Atomik Git Commit Standartları</h2>
+      <p class="section-desc">Projemizde her adımda GitHub repomuza temiz ve kurumsal commit'ler atacağız:</p>
+
+      <pre><code><span class="cls">feat</span>(core): Konfigürasyon yönetimi ve veritabanı motoru eklendi
+<span class="cls">feat</span>(models): User, Project ve Task domain modelleri oluşturuldu
+<span class="cls">feat</span>(repositories): BaseRepository ve TaskRepository eklendi (Repository Pattern)
+<span class="cls">feat</span>(services): TaskService oluşturuldu ve PriorityQueue ile sıralama entegre edildi
+<span class="cls">test</span>(core): Veritabanı oturum ve transaction testleri yazıldı
+<span class="cls">docs</span>: Mimari dokümanlar ve OpenAPI şeması güncellendi</code></pre>
+    </section>
+
+    <footer>
+      <p>TaskForge API Projesi &bull; Sinem Durmaz &bull; Kurumsal Python & FastAPI Mühendisliği</p>
+    </footer>
+  </div>
+</body>
+</html>
