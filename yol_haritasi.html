@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">1 / 8 Faz Tamamlandı (%12.5)</span>
+        <span style="color: var(--accent-blue);">2 / 8 Faz Tamamlandı (%25.0)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill"></div>
+        <div class="progress-bar-fill" style="width: 25%;"></div>
       </div>
     </div>
 
@@ -308,10 +308,10 @@
       </div>
 
       <!-- FAZ 1 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>⚙️</span> Faz 1: Çekirdek Altyapı (core/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">Pydantic tabanlı konfigürasyon yönetimi, veritabanı motoru ve ACID uyumlu Session yaşam döngüsü.</p>
         <div class="tags">
@@ -321,20 +321,20 @@
           <span class="tag tag-oop">OOP: Encapsulation</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ core/config.py (Ortam değişkenleri ve Settings sınıfı)</li>
-          <li class="current">⏳ core/database.py (Engine, init_db ve get_session generator)</li>
-          <li class="current">⏳ .env ve .env.example şablonları</li>
+          <li class="done">✓ core/config.py (Ortam değişkenleri ve Settings sınıfı)</li>
+          <li class="done">✓ core/database.py (Engine, init_db ve get_session generator)</li>
+          <li class="done">✓ .env ve .env.example şablonları</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: feat(core): Konfigurasyon yonetimi ve ACID uyumlu veritabani motoru eklendi
+          Commit: 063f0a6 feat(core): Konfigurasyon yonetimi ve ACID uyumlu veritabani motoru eklendi
         </div>
       </div>
 
       <!-- FAZ 2 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>📦</span> Faz 2: Domain Modelleri (models/)</div>
-          <span class="status-badge status-wait">Sırada</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">SQLModel ile güçlü OOP kalıtım mimarisi: User, Project, Task, Sprint ve ActivityLog varlıkları.</p>
         <div class="tags">
@@ -343,10 +343,10 @@
           <span class="tag">SQLModel Entities & DTOs</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ Base model sınıfı (id, created_at, updated_at)</li>
-          <li class="pending">○ User modeli (roller: Admin, Manager, Developer)</li>
-          <li class="pending">○ Project ve Sprint modelleri</li>
-          <li class="pending">○ Task modeli (Enum: Priority & Status, Foreign Keys)</li>
+          <li class="current">⏳ Base model sınıfı (id, created_at, updated_at)</li>
+          <li class="current">⏳ User modeli (roller: Admin, Manager, Developer)</li>
+          <li class="current">⏳ Project ve Sprint modelleri</li>
+          <li class="current">⏳ Task modeli (Enum: Priority & Status, Foreign Keys)</li>
         </ul>
         <div class="commit-box">
           Hedef Commit: feat(models): User, Project ve Task domain modelleri olusturuldu
