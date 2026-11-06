@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: taskforge-api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - PROJECT_NAME=TaskForge API
+      - DATABASE_URL=sqlite:///data/taskforge.db
+      - SECRET_KEY=production-secure-random-secret-key-change-me
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60
+    volumes:
+      - taskforge_data:/app/data
+
+volumes:
+  taskforge_data:
