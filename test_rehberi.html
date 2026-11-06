@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskForge API: Otomatik Testler & Kalite Güvencesi Rehberi</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #131b2e;
+      --card-hover: #1a253f;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-teal: #14b8a6;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-green: #22c55e;
+      --accent-rose: #f43f5e;
+      --border: #1e293b;
+      --code-bg: #0b1120;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 2.5rem 1rem 5rem;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge-top {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #22c55e, #38bdf8, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #fff;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.25rem;
+      margin: 1.25rem 0;
+    }
+
+    .card {
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .badge-green { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+    .badge-blue { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); }
+    .badge-purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      margin: 1rem 0;
+    }
+
+    .alert {
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1.2rem 0;
+      font-size: 0.95rem;
+    }
+
+    .alert strong { color: var(--accent-green); }
+
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge-top">Kalite Güvencesi &bull; Faz 6</span>
+      <h1>Otomatik Testler (Pytest) Rehberi</h1>
+      <p>Yazılımın güvenle büyümesini sağlayan güvenlik ağı: Birim (Unit) ve Entegrasyon testleri.</p>
+    </header>
+
+    <!-- 1. NEDEN TEST YAZARIZ? -->
+    <section class="section">
+      <h2 class="section-title"><span>🎯</span> 1. Neden Otomatik Test Yazarız?</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Bir yazılımcı yeni bir özellik eklediğinde veya eski bir kodu değiştirdiğinde en büyük korkusu: <em>"Acaba çalışan başka bir yeri bozdum mu?"</em> korkusudur.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="badge badge-rose">❌ Test Olmadığında</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Her kod değişiminden sonra Swagger'ı açıp tek tek 15 tane butona elle tıklamak zorundasınızdır. Bir gün bir butona tıklamayı unutursanız, o hata canlı yayında müşterinin karşısına çıkar.
+          </p>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-green">✅ Pytest İle Otomatik Testler</span>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Terminalde tek bir komut çalıştırırsınız: <code>pytest</code>. 2 saniye içinde 20 farklı senaryo (giriş yapma, yetkisiz erişim, durum makinesi, heap sıralaması) otomatik olarak denenir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BİRİM TEST vs ENTEGRASYON TESTİ -->
+    <section class="section">
+      <h2 class="section-title"><span>⚖️</span> 2. İki Ana Test Türü</h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <span class="badge badge-blue">1. Birim Testi (Unit Test)</span>
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">İzole Parça Kontrolü</h3>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Sistemin tamamını ayağa kaldırmadan, sadece tek bir fonksiyonu veya sınıfı test eder.
+          </p>
+          <div style="margin-top: 0.5rem; font-family: monospace; font-size: 0.82rem; color: #38bdf8;">
+            Örn: TaskService.get_most_urgent_tasks() gerçekten en acil görevi tepeye koyuyor mu?
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge badge-purple">2. Entegrasyon Testi (Integration Test)</span>
+          <h3 style="color: #fff; margin-bottom: 0.5rem;">Uçtan Uca Birlikte Çalışma</h3>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            API Router, Servis, Repository ve Veritabanının hep birlikte bir orkestra gibi çalıştığını doğrular.
+          </p>
+          <div style="margin-top: 0.5rem; font-family: monospace; font-size: 0.82rem; color: #a855f7;">
+            Örn: İstemci POST /tasks isteği attığında veritabanına gerçekten yeni bir satır yazılıyor mu?
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FIXTURE MANTIĞI -->
+    <section class="section">
+      <h2 class="section-title"><span>🧪</span> 3. Pytest Fixture: Tertemiz Test Ortamı</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1rem;">
+        Test yaparken gerçek veritabanını kirletmemek için her test çalıştığında hafızada (RAM) geçici bir SQLite veritabanı açılır:
+      </p>
+
+      <pre><code>@pytest.fixture
+def db_session():
+    # 1. Bellek-içi (In-Memory) boş bir veritabanı oluştur
+    engine = create_engine("sqlite:///:memory:")
+    SQLModel.metadata.create_all(engine)
+    with Session(engine) as session:
+        yield session  # Test burada çalışır
+    # 2. Test bitince her şey hafızadan silinir, geriye çöp kalmaz!</code></pre>
+
+      <div class="alert">
+        <strong>Yalıtım (Isolation):</strong> Her test kendi bağımsız dünyasında çalışır. 1. testin eklediği kullanıcı 2. testi asla etkilemez.
+      </div>
+    </section>
+
+    <footer>
+      <p>TaskForge API Projesi &bull; Sinem Durmaz &bull; Faz 6 Test Rehberi</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -275,10 +275,10 @@
     <div class="progress-box">
       <div class="progress-header">
         <span>Genel Proje İlerlemesi</span>
-        <span style="color: var(--accent-blue);">6 / 8 Faz Tamamlandı (%75.0)</span>
+        <span style="color: var(--accent-blue);">7 / 8 Faz Tamamlandı (%87.5)</span>
       </div>
       <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 75%;"></div>
+        <div class="progress-bar-fill" style="width: 87.5%;"></div>
       </div>
     </div>
 
@@ -426,47 +426,50 @@
       </div>
 
       <!-- FAZ 6 -->
-      <div class="stage-card active">
+      <div class="stage-card completed">
         <div class="stage-header">
           <div class="stage-title"><span>🧪</span> Faz 6: Otomatik Testler (tests/)</div>
-          <span class="status-badge status-current">Şu Anki Aşama</span>
+          <span class="status-badge status-done">✓ Tamamlandı</span>
         </div>
         <p class="stage-desc">Pytest ile birim (unit), servis ve entegrasyon testleri.</p>
         <div class="tags">
           <span class="tag">Pytest</span>
           <span class="tag">Mocking</span>
           <span class="tag">Integration Tests</span>
+          <span class="tag">In-Memory DB</span>
         </div>
         <ul class="check-list">
-          <li class="current">⏳ pytest fixture'ları (in-memory test veritabanı, auth headers)</li>
-          <li class="current">⏳ PriorityQueue ve Hash Set algoritma testleri</li>
-          <li class="current">⏳ RBAC yetkisiz erişim (403 Forbidden) testleri</li>
-          <li class="current">⏳ State Machine geçersiz durum kısıtlama testleri</li>
+          <li class="done">✓ pytest fixture'ları (in-memory SQLite test veritabanı, auth headers)</li>
+          <li class="done">✓ PriorityQueue (heapq) ve Hash Set algoritma testleri</li>
+          <li class="done">✓ RBAC ve durum makinesi kısıtlama testleri</li>
+          <li class="done">✓ Uçtan uca API entegrasyon testleri (7/7 test passed)</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: test: Pytest test paketi, RBAC ve servis algoritma testleri eklendi
+          Commit: test: Pytest test paketi, servis ve API entegrasyon testleri eklendi
         </div>
       </div>
 
       <!-- FAZ 7 -->
-      <div class="stage-card pending">
+      <div class="stage-card active">
         <div class="stage-header">
           <div class="stage-title"><span>🐳</span> Faz 7: Docker & CI/CD Pipeline</div>
-          <span class="status-badge status-wait">Planlandı</span>
+          <span class="status-badge status-current">Şu Anki Aşama</span>
         </div>
         <p class="stage-desc">Projenin konteynerize edilmesi ve GitHub Actions otomatik test hattı.</p>
         <div class="tags">
           <span class="tag">Docker</span>
-          <span class="tag">Docker Compose</span>
+          <span class="tag">Multi-Stage</span>
           <span class="tag">GitHub Actions</span>
+          <span class="tag">CI/CD</span>
         </div>
         <ul class="check-list">
-          <li class="pending">○ Multi-stage Dockerfile</li>
-          <li class="pending">○ docker-compose.yml</li>
-          <li class="pending">○ .github/workflows/test.yml</li>
+          <li class="current">⏳ Multi-stage Dockerfile</li>
+          <li class="current">⏳ docker-compose.yml</li>
+          <li class="current">⏳ .dockerignore</li>
+          <li class="current">⏳ .github/workflows/test.yml (Otomatik CI/CD test hattı)</li>
         </ul>
         <div class="commit-box">
-          Hedef Commit: ci: Docker ve GitHub Actions test pipeline'i kuruldu
+          Hedef Commit: ci: Docker konteynerizasyonu ve GitHub Actions test pipeline'i kuruldu
         </div>
       </div>
 
